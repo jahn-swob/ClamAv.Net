@@ -1,0 +1,40 @@
+# Build Products
+obj/
+bin/
+/coverage/
+/dist/
+
+# Visual Studio
+.vs/
+*.user
+
+# Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# Local Files
+/Local.props
+
+# Temporary Files
+*.log
+*.old
+*.tmp
+
+# Git
+*.orig
+*.patch
+*.rej
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings
+
+# Windows Junk
+Thumbs.db
+Desktop.ini
+
+# OS X Junk
+.DS_Store
