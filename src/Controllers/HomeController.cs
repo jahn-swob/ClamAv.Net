@@ -36,7 +36,7 @@ namespace ClamAv.Net.Controllers
             var file = await GetFileBytesAsync(Request.Body, cancellation);
 
             // Scanning for viruses...
-            var scan   = await ClamAvClient.SendAndScanFileAsync(file, cancellation);
+            var scan   = await CreateClamClient.SendAndScanFileAsync(file, cancellation);
             var result = new ScanResult();
             switch (scan.Result)
             {
@@ -55,7 +55,7 @@ namespace ClamAv.Net.Controllers
         {
             try
             {
-                return await ClamAvClient.PingAsync(cancellation);
+                return await CreateClamClient.PingAsync(cancellation);
             }
             catch
             {
@@ -67,6 +67,8 @@ namespace ClamAv.Net.Controllers
 
         private async Task<byte[]> GetFileBytesAsync(Stream stream, CancellationToken cancellation)
         {
+            // TODO: Do not buffer entire file in memory; use Stream instead.
+
             // Get the max file size content length
             var maxStreamLength = ClamAvServerMaxFileSizeMegaBytes * 1024;
 
@@ -94,9 +96,12 @@ namespace ClamAv.Net.Controllers
             return ms.ToArray();
         }
 
-        private ClamClient ClamAvClient
+        // TODO: When it's time for tests, inject an IClamClient factory.
+        // TODO: Is ClamClient thread-safe?  If so, could just inject a singleton IClamClient.
+        private IClamClient CreateClamClient
             => new ClamClient(ClamAvServer, ClamAvServerPort);
 
+        // TODO: Use ASP.NET Core's configuration system
         private string ClamAvServer
             => GetEnvironmentVariable("CLAMD_SERVER");
 
