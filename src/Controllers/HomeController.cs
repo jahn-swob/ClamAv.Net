@@ -36,7 +36,7 @@ namespace ClamAv.Net.Controllers
             var file = await GetFileBytesAsync(Request.Body, cancellation);
 
             // Scanning for viruses...
-            var scan   = await ClamAvClient.SendAndScanFileAsync(file, cancellation);
+            var scan   = await CreateClamClient.SendAndScanFileAsync(file, cancellation);
             var result = new ScanResult();
             switch (scan.Result)
             {
@@ -55,7 +55,7 @@ namespace ClamAv.Net.Controllers
         {
             try
             {
-                return await ClamAvClient.PingAsync(cancellation);
+                return await CreateClamClient.PingAsync(cancellation);
             }
             catch
             {
@@ -94,7 +94,7 @@ namespace ClamAv.Net.Controllers
             return ms.ToArray();
         }
 
-        private ClamClient ClamAvClient
+        private IClamClient CreateClamClient
             => new ClamClient(ClamAvServer, ClamAvServerPort);
 
         private string ClamAvServer
