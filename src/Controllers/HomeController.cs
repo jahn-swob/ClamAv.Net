@@ -26,14 +26,14 @@ namespace ClamAv.Net.Controllers
         }
 
         [HttpGet]
-        public async Task<PingResult> Get(CancellationToken cancellation)
-            => new PingResult(await TryPing(cancellation));
+        public async Task<PingResult> GetAsync(CancellationToken cancellation)
+            => new PingResult(await TryPingAsync(cancellation));
 
         [HttpPost]
-        public async Task<IActionResult> CheckFile(CancellationToken cancellation)
+        public async Task<IActionResult> CheckFileAsync(CancellationToken cancellation)
         {
             // Get file from body
-            var file = await GetFileBytes(Request.Body, cancellation);
+            var file = await GetFileBytesAsync(Request.Body, cancellation);
 
             // Scanning for viruses...
             var scan   = await ClamAvClient.SendAndScanFileAsync(file, cancellation);
@@ -51,7 +51,7 @@ namespace ClamAv.Net.Controllers
             return Ok(result);
         }
 
-        private async Task<bool> TryPing(CancellationToken cancellation)
+        private async Task<bool> TryPingAsync(CancellationToken cancellation)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace ClamAv.Net.Controllers
             }
         }
 
-        private async Task<byte[]> GetFileBytes(Stream stream, CancellationToken cancellation)
+        private async Task<byte[]> GetFileBytesAsync(Stream stream, CancellationToken cancellation)
         {
             // Get the max file size content length
             var maxStreamLength = ClamAvServerMaxFileSizeMegaBytes * 1024;
