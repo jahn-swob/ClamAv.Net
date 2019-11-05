@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -7,6 +8,9 @@ using ClamAv.Net.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using nClam;
+
+using static System.Environment;
+using static ClamAv.Net.Controllers.Infrastructure.ActionResultHelpers;
 
 namespace ClamAv.Net.Controllers
 {
@@ -18,7 +22,7 @@ namespace ClamAv.Net.Controllers
 
         public HomeController(ILogger<HomeController> logger)
         {
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet]
@@ -26,7 +30,7 @@ namespace ClamAv.Net.Controllers
             => new PingResult(await TryPing(cancellation));
 
         [HttpPost]
-        public async Task<ScanResult> CheckFile(CancellationToken cancellation)
+        public async Task<IActionResult> CheckFile(CancellationToken cancellation)
         {
             // Get file from body
             var file = await GetFileBytes(Request.Body, cancellation);
@@ -41,12 +45,10 @@ namespace ClamAv.Net.Controllers
                     result.VirusName  = scan.InfectedFiles.First().VirusName;
                     break;
                 case ClamScanResults.Error:
-                    result.ScanFailed     = true;
-                    result.FailureMessage = scan.RawResult;
-                    break;
+                    return ServiceUnavailable(scan.RawResult);
             }
 
-            return result;
+            return Ok(result);
         }
 
         private async Task<bool> TryPing(CancellationToken cancellation)
@@ -55,9 +57,12 @@ namespace ClamAv.Net.Controllers
             {
                 return await ClamAvClient.PingAsync(cancellation);
             }
-            catch { /* ignored */ }
-
-            return false;
+            catch
+            {
+                 // Ignoring the exception so that false is returned on the pong
+                 // instead of an exception bubbling up
+                 return false;
+            }
         }
 
         private async Task<byte[]> GetFileBytes(Stream stream, CancellationToken cancellation)
@@ -93,16 +98,24 @@ namespace ClamAv.Net.Controllers
             => new ClamClient(ClamAvServer, ClamAvServerPort);
 
         private string ClamAvServer
-            => Environment.GetEnvironmentVariable("CLAMD_SERVER");
+            => GetEnvironmentVariable("CLAMD_SERVER");
 
         private int ClamAvServerPort
-            => int.TryParse(Environment.GetEnvironmentVariable("CLAMD_SERVER_PORT"), out var port)
+            => int.TryParse(
+                   GetEnvironmentVariable("CLAMD_SERVER_PORT"),
+                   NumberStyles.Integer,
+                   CultureInfo.InvariantCulture,
+                   out var port)
                 ? port
                 : 0;
 
         private int ClamAvServerMaxFileSizeMegaBytes
-            => int.TryParse(Environment.GetEnvironmentVariable("CLAMD_SERVER_MAX_FILESIZE_MB"), out var mbs)
+            => int.TryParse(
+                   GetEnvironmentVariable("CLAMD_SERVER_MAX_FILESIZE_MB"),
+                   NumberStyles.Integer,
+                   CultureInfo.InvariantCulture,
+                   out var mbs)
                 ? mbs
-                : 0;
+                : 16;
     }
 }
