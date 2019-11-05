@@ -13,6 +13,7 @@ namespace ClamAv.Net
                 .CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(web =>
                 {
+                    web.UseKestrel(c => c.AddServerHeader = false);
                     web.UseStartup<Startup>();
                 })
                 .Build()
