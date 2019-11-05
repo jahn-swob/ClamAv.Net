@@ -10,6 +10,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <LangVersion>8</LangVersion>
+    <!--<Nullable>enable</Nullable>-->
     <UserSecretsId>d072646e-a6fc-4db4-98e0-d757e29822ed</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
