@@ -14,16 +14,16 @@ namespace ClamAv.Net.Controllers.Infrastructure
         {
             return new ObjectResult(new ProblemDetails
             {
-                Type  = "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503",
-                Title = "Service Unavailable",
-                Detail = details ?? string.Format(
+                Type   = "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503",
+                Title  = "Service Unavailable",
+                Detail = details ??
                     "The server is not ready to handle the request. "                   +
                     "Common causes are when server is waiting for third party "         +
                     "dependencies to start up, the server is down for maintenance, "    +
                     "or that the server is overloaded. Attempting the operation again " +
                     "after waiting momentarily may result in a successful request."
-                )
-            }) { StatusCode = Status503ServiceUnavailable };
+            })
+            { StatusCode = Status503ServiceUnavailable };
         }
     }
 }
