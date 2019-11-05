@@ -67,6 +67,8 @@ namespace ClamAv.Net.Controllers
 
         private async Task<byte[]> GetFileBytesAsync(Stream stream, CancellationToken cancellation)
         {
+            // TODO: Do not buffer entire file in memory; use Stream instead.
+
             // Get the max file size content length
             var maxStreamLength = ClamAvServerMaxFileSizeMegaBytes * 1024;
 
@@ -94,9 +96,12 @@ namespace ClamAv.Net.Controllers
             return ms.ToArray();
         }
 
+        // TODO: When it's time for tests, inject an IClamClient factory.
+        // TODO: Is ClamClient thread-safe?  If so, could just inject a singleton IClamClient.
         private IClamClient CreateClamClient
             => new ClamClient(ClamAvServer, ClamAvServerPort);
 
+        // TODO: Use ASP.NET Core's configuration system
         private string ClamAvServer
             => GetEnvironmentVariable("CLAMD_SERVER");
 
