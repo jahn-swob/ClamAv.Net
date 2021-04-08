@@ -8,7 +8,7 @@ Most lines should begin with one of these words:
 (none)
 
 ## [0.1.0](https://github.com/ogsys/OGpro.Data/compare/release/0.0.0...release/0.1.0)
-- Update to ASP.NET Core 3.1
+- Update to ASP.NET 5.0
 - Update project structure
 
 ## [0.0.0](https://github.com/ogsys/OGpro.Data/tree/v0.0.0)
