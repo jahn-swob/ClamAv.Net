@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  clamav-server:
+    image: mkodockx/docker-clamav
+    restart: unless-stopped
+    networks:
+      - backend
+  clamav-net:
+    image: ${DOCKER_REGISTRY-}clamavnet
+    build:
+      context: src
+      dockerfile: Dockerfile
+    depends_on:
+      - clamav-server
+    networks:
+      - backend
+networks:
+  backend:
+    driver: "bridge"

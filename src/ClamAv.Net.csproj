@@ -1,26 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <Product>ClamAv.Net</Product>
     <Description>Simple HTTP API for ClamAV</Description>
-    <Version>0.0.0</Version>
-    <Authors>Jahn Swob</Authors>
-    <Copyright>Copyright 2019 Jahn Swob</Copyright>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
-    <LangVersion>8</LangVersion>
-    <!--<Nullable>enable</Nullable>-->
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <SetAzurePipelinesBuildName>true</SetAzurePipelinesBuildName>
     <UserSecretsId>d072646e-a6fc-4db4-98e0-d757e29822ed</UserSecretsId>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>.</DockerfileContext>
-    <DockerComposeProjectPath>docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.5" />
-    <PackageReference Include="nClam" Version="4.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
+    <PackageReference Include="nClam" Version="5.0.1" />
   </ItemGroup>
 
 </Project>

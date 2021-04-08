@@ -27,7 +27,7 @@ namespace ClamAv.Net.Controllers
 
         [HttpGet]
         public async Task<PingResult> GetAsync(CancellationToken cancellation)
-            => new PingResult(await TryPingAsync(cancellation));
+            => new(await TryPingAsync(cancellation));
 
         [HttpPost]
         public async Task<IActionResult> CheckFileAsync(CancellationToken cancellation)
@@ -65,7 +65,7 @@ namespace ClamAv.Net.Controllers
             }
         }
 
-        private async Task<byte[]> GetFileBytesAsync(Stream stream, CancellationToken cancellation)
+        private async Task<byte[]?> GetFileBytesAsync(Stream stream, CancellationToken cancellation)
         {
             // TODO: Do not buffer entire file in memory; use Stream instead.
 
@@ -90,7 +90,7 @@ namespace ClamAv.Net.Controllers
             int read;
             while ((read = await stream.ReadAsync(buffer, 0, buffer.Length, cancellation)) > 0)
             {
-                ms.Write(buffer, 0, read);
+                await ms.WriteAsync(buffer, 0, read, cancellation);
             }
 
             return ms.ToArray();
@@ -102,7 +102,7 @@ namespace ClamAv.Net.Controllers
             => new ClamClient(ClamAvServer, ClamAvServerPort);
 
         // TODO: Use ASP.NET Core's configuration system
-        private string ClamAvServer
+        private string? ClamAvServer
             => GetEnvironmentVariable("CLAMD_SERVER");
 
         private int ClamAvServerPort

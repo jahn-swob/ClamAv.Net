@@ -10,9 +10,9 @@ namespace ClamAv.Net.Controllers.Infrastructure
         ///   Creates an <see cref="ObjectResult"/> that produces a
         ///   <see cref="Status503ServiceUnavailable"/> response.
         /// </summary>
-        public static ObjectResult ServiceUnavailable(string details = null)
+        public static ObjectResult ServiceUnavailable(string? details = null)
         {
-            return new ObjectResult(new ProblemDetails
+            return new(new ProblemDetails
             {
                 Type   = "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503",
                 Title  = "Service Unavailable",

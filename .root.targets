@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.Build.NoTargets/3.0.4">
+  <!-- https://github.com/microsoft/MSBuildSdks/tree/master/src/NoTargets -->
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+    <SkipCopyBuildProduct>true</SkipCopyBuildProduct>
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>none</DebugType>
+    <IsPublishable>false</IsPublishable>
+    <IsPackable>false</IsPackable>
+    <SetAzurePipelinesBuildName>true</SetAzurePipelinesBuildName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="**" Exclude="src\**;obj\**;coverage\**;dist\**;$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder);$(MSBuildThisFile)" />
+    <None Include=".*\**" Exclude=".git\**;.vs\**" />
+  </ItemGroup>
+
+</Project>

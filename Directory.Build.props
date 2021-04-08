@@ -1,0 +1,41 @@
+﻿<Project>
+
+  <!--
+    * Imported very early, before the project file.
+    * Many properties are not yet defined and behave as if empty.
+    * Provide defaults for properties here.
+    https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build
+  -->
+
+  <!-- Descriptive properties -->
+  <PropertyGroup>
+    <Product>ClamAv.Net</Product>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <Authors>Jahn Swob</Authors>
+    <Copyright>Copyright 2021 Jahn Swob</Copyright>
+    <PackageProjectUrl>https://github.com/jahn-swob/ClamAv.Net</PackageProjectUrl>
+    <PackageTags>ClamAV</PackageTags>
+    <PackageReleaseNotes>$(PackageProjectUrl)/blob/master/CHANGES.md</PackageReleaseNotes>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
+  </PropertyGroup>
+
+  <!-- Build properties -->
+  <PropertyGroup>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <!-- Hide .root project output -->
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == '.root'">
+    <BaseOutputPath>.vs\.root\bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>.vs\.root\obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <!-- Version stamping (Subatomix.Build.Versioning.Semantic) -->
+  <PropertyGroup>
+    <StampFilePath>$(MSBuildThisFileDirectory)Stamp.props</StampFilePath>
+  </PropertyGroup>
+  <Import Project="$(StampFilePath)" Condition="Exists('$(StampFilePath)')"/>
+
+</Project>
